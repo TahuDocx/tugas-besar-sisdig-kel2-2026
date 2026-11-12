@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hyperbolic CORDIC Simulator</title>
+<style>
+  :root { --bg:#0f1419; --panel:#171e26; --line:#2a3542; --text:#d7dee6; --mute:#8592a0;
+          --acc:#4fb3ff; --ok:#5fd18b; --warn:#ffb454; --bad:#ff6b6b; --mono: ui-monospace, Consolas, monospace; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text); font:14px/1.5 system-ui, sans-serif; }
+  header { padding:14px 20px; border-bottom:1px solid var(--line); }
+  header h1 { margin:0; font-size:18px; }
+  header p { margin:2px 0 0; color:var(--mute); }
+  main { display:grid; grid-template-columns: 320px 1fr; gap:16px; padding:16px 20px; }
+  @media (max-width: 1000px) { main { grid-template-columns: 1fr; } }
+  section { background:var(--panel); border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:16px; }
+  h2 { font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--mute); margin:0 0 10px; }
+  label { display:flex; justify-content:space-between; align-items:center; gap:8px; margin:6px 0; }
+  input, select, button { font:inherit; color:var(--text); background:#0c1116; border:1px solid var(--line); border-radius:5px; padding:4px 6px; }
+  input[type=number], select { width:130px; }
+  input[type=range] { width:100%; padding:0; }
+  button { cursor:pointer; padding:5px 10px; }
+  button:hover { border-color:var(--acc); }
+  button:focus-visible, input:focus-visible, select:focus-visible { outline:2px solid var(--acc); outline-offset:1px; }
+  .row { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+  .kv { display:grid; grid-template-columns: auto 1fr; gap:2px 12px; font-family:var(--mono); font-size:13px; }
+  .kv span:nth-child(odd) { color:var(--mute); }
+  .kv span { overflow-wrap:anywhere; }
+  .ok { color:var(--ok); } .warn { color:var(--warn); } .bad { color:var(--bad); }
+  .msg { margin-top:8px; font-size:13px; }
+  canvas { width:100%; display:block; background:#0c1116; border-radius:6px; }
+  #plot { cursor:grab; touch-action:none; }
+  #plot.dragging { cursor:grabbing; }
+  .plots { display:grid; grid-template-columns: 3fr 2fr; gap:16px; }
+  @media (max-width: 1300px) { .plots { grid-template-columns: 1fr; } }
+  .eq { font-family:var(--mono); font-size:13px; white-space:pre; overflow-x:auto; background:#0c1116; padding:8px 10px; border-radius:6px; }
+  table { border-collapse:collapse; width:100%; font-family:var(--mono); font-size:12.5px; }
+  th, td { padding:3px 8px; text-align:right; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { color:var(--mute); font-weight:normal; position:sticky; top:0; background:var(--panel); }
+  tr.cur td { background:#1f3346; }
+  table.cmp { font-family:system-ui, sans-serif; font-size:13px; }
+  table.cmp td, table.cmp th { text-align:left; white-space:normal; vertical-align:top; padding:5px 10px; }
+  table.cmp td:first-child { color:var(--mute); white-space:nowrap; }
+  table.cmp tr { cursor:default; }
+  table.cmp .active { background:#1f3346; }
+  table.cmp th.active { color:var(--acc); }
+  .out { color:var(--ok); font-weight:600; }
+  td.outcell { background:#1d3b2a; color:#7ee2a5; font-weight:600; }
+  .regs { grid-template-columns: 40px 1fr; font-family:system-ui, sans-serif; font-size:13px; }
+  .regs span:nth-child(odd) { font-family:var(--mono); color:var(--acc); font-weight:600; }
+  tr.rep td:nth-child(2) { color:var(--warn); }
+  tr { cursor:pointer; }
+  .tablewrap { max-height:420px; overflow:auto; }
+  .hex { color:var(--mute); }
+  pre { margin:0; }
+  .theory p, .theory li { color:#c4ccd5; }
+  .theory code { font-family:var(--mono); background:#0c1116; padding:0 4px; border-radius:3px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Hyperbolic CORDIC Simulator</h1>
+  <p>Step through each iteration. Fixed-point mode is bit-exact integer math, so you can compare it 1:1 with your HDL testbench.</p>
+</header>
+
+<main>
+  <div>
+    <section>
+      <h2>Input</h2>
+      <label>Function
+        <select id="func">
+          <option value="cosh">cosh(t)  rotation</option>
+          <option value="sinh">sinh(t)  rotation</option>
+          <option value="exp">exp(t)  rotation</option>
+          <option value="atanh">atanh(t)  vectoring</option>
+          <option value="ln">ln(w)  vectoring</option>
+          <option value="sqrt">sqrt(w)  vectoring</option>
+        </select>
+      </label>
+      <label><span id="inLabel">t</span> <input id="inp" type="number" step="0.01" value="0.5"></label>
+      <label>Iterations N <input id="n" type="number" min="3" max="40" value="16"></label>
+      <h2 style="margin-top:14px">Number format</h2>
+      <label>Datapath
+        <select id="fmt"><option value="fixed">Fixed-point (FPGA)</option><option value="float">Float (ideal)</option></select>
+      </label>
+      <label>Fraction bits F <input id="frac" type="number" min="4" max="30" value="14"></label>
+      <label>Word width W <input id="width" type="number" min="6" max="48" value="18"></label>
+      <div class="msg" id="fmtInfo"></div>
+    </section>
+
+    <section>
+      <h2>Result</h2>
+      <div class="kv" id="result"></div>
+      <div class="msg" id="warn"></div>
+    </section>
+
+    <section>
+      <h2 id="regsTitle">What the registers mean</h2>
+      <div class="kv regs" id="regs"></div>
+    </section>
+
+    <section>
+      <h2>Hardware constants</h2>
+      <div class="kv" id="consts"></div>
+      <p class="msg" style="color:var(--mute)">atanh LUT (one ROM entry / pipeline stage):</p>
+      <pre class="eq" id="lut" style="max-height:220px"></pre>
+    </section>
+  </div>
+
+  <div>
+    <section>
+      <h2>Step <span id="stepLbl"></span></h2>
+      <div class="row">
+        <button id="first" aria-label="First step">|&lt;</button>
+        <button id="prev" aria-label="Previous step">&lt;</button>
+        <button id="play">Play</button>
+        <button id="next" aria-label="Next step">&gt;</button>
+        <button id="last" aria-label="Last step">&gt;|</button>
+        <input id="step" type="range" min="0" value="0" style="flex:1; min-width:150px" aria-label="Step">
+      </div>
+      <div class="eq" id="eq" style="margin-top:10px"></div>
+    </section>
+
+    <div class="plots">
+      <section>
+        <div class="row" style="justify-content:space-between; margin-bottom:8px">
+          <h2 style="margin:0">Vector (x, y) on hyperbolas x² − y² = const</h2>
+          <div class="row">
+            <button id="zin" aria-label="Zoom in">+</button>
+            <button id="zout" aria-label="Zoom out">−</button>
+            <button id="zauto" title="Auto-follow zoom (also: double-click the plot)">Auto</button>
+          </div>
+        </div>
+        <p class="msg" style="margin:0 0 6px; color:var(--mute)">Scroll = zoom at cursor · drag = pan · double-click = auto</p>
+        <canvas id="plot" height="380"></canvas>
+      </section>
+      <section>
+        <h2 id="resTitle">Residual |z| per step (log₂)</h2>
+        <canvas id="res" height="380"></canvas>
+      </section>
+    </div>
+
+    <section>
+      <h2>Iteration table <span style="text-transform:none; letter-spacing:0">(click a row; repeated shifts in orange)</span></h2>
+      <div class="tablewrap"><table id="tbl"></table></div>
+    </section>
+
+    <section class="theory">
+      <h2>Rotation vs Vectoring <span style="text-transform:none; letter-spacing:0">(current mode highlighted)</span></h2>
+      <div style="overflow-x:auto">
+      <table id="modes" class="cmp">
+        <tr><th></th><th data-mode="rotation">Rotation mode</th><th data-mode="vectoring">Vectoring mode</th></tr>
+        <tr><td>Question it answers</td><td data-mode="rotation">"Rotate this vector by angle t: where does it end up?"</td><td data-mode="vectoring">"What angle (and length) does this vector have?"</td></tr>
+        <tr><td>Register driven to 0</td><td data-mode="rotation"><b>z</b> (angle left)</td><td data-mode="vectoring"><b>y</b> (vector pushed onto the x-axis)</td></tr>
+        <tr><td>Direction rule</td><td data-mode="rotation">d = sign(z) → MSB of z</td><td data-mode="vectoring">d = −sign(y) → MSB of y</td></tr>
+        <tr><td>Start values</td><td data-mode="rotation">x₀ = 1/K, y₀ = 0, z₀ = t</td><td data-mode="vectoring">x₀, y₀ = function inputs, z₀ = 0</td></tr>
+        <tr><td>What z means</td><td data-mode="rotation">angle still to rotate (t → 0)</td><td data-mode="vectoring">angle rotated so far (0 → atanh(y₀/x₀))</td></tr>
+        <tr><td>Final outputs</td><td data-mode="rotation">x = cosh t, y = sinh t, z ≈ 0</td><td data-mode="vectoring">x = K·√(x₀² − y₀²), y ≈ 0, z = atanh(y₀/x₀)</td></tr>
+        <tr><td>Functions</td><td data-mode="rotation">cosh, sinh, exp = x + y</td><td data-mode="vectoring">atanh = z, ln w = 2z, √w = x/K</td></tr>
+        <tr><td>Input range</td><td data-mode="rotation">|t| ≤ 1.118</td><td data-mode="vectoring">|y₀/x₀| ≤ 0.807 (ln: w ∈ 0.107…9.36, √: w ∈ 0.027…2.34)</td></tr>
+        <tr><td>Gain K handling</td><td data-mode="rotation">cancelled up front (x₀ = 1/K), no multiplier</td><td data-mode="vectoring">appears in x: multiply by 1/K at the end (only √ needs it)</td></tr>
+        <tr><td>Integer bits needed (W − F − 1)</td><td data-mode="rotation">~2 (values ≤ e^1.118 ≈ 3.06)</td><td data-mode="vectoring">~4 (x₀ = w + 1 up to ≈ 10.4)</td></tr>
+        <tr><td>Residual chart shows</td><td data-mode="rotation">|z| shrinking</td><td data-mode="vectoring">|y| shrinking</td></tr>
+        <tr><td>Hardware difference</td><td colspan="2" style="text-align:center"><b>Same datapath</b> (shifts, 3 adders, the same atanh LUT). Only the d-select mux differs: <code>d_neg = mode ? ~y[W-1] : z[W-1]</code> (d_neg = 1 means d = −1, subtract). One core with a <code>mode</code> input can do both.</td></tr>
+      </table>
+      </div>
+      <h2 style="margin-top:16px" id="whyRepeat">Why is i repeated? (4, 13, 40, …)</h2>
+      <p>Every step <b>must</b> rotate by ±θᵢ = ±atanh(2⁻ⁱ). There is no "skip" (d is never 0). So if a step overshoots, all the later steps together must be able to rotate back:</p>
+      <pre class="eq">θᵢ  ≤  θᵢ₊₁ + θᵢ₊₂ + θᵢ₊₃ + …       (each angle ≤ sum of all remaining angles)</pre>
+      <ul>
+        <li><b>Circular CORDIC</b>: atan(2⁻ⁱ) = 2⁻ⁱ − 2⁻³ⁱ/3 + … is slightly <i>less</i> than 2⁻ⁱ, so the rule holds and no repeats are needed.</li>
+        <li><b>Hyperbolic CORDIC</b>: atanh(2⁻ⁱ) = 2⁻ⁱ + 2⁻³ⁱ/3 + … is slightly <i>more</i> than 2⁻ⁱ, but the remaining sum is only ≈ 2⁻ⁱ. The rule fails: there is a <b>gap</b> of angles that can never be recovered.</li>
+      </ul>
+      <div class="row" style="align-items:flex-start; gap:28px">
+        <div><p class="msg">Gap without repeats (N = <span class="nN"></span>, red = unrecoverable):</p><table id="gapTbl" class="cmp"></table></div>
+        <div><p class="msg">Final z (should be ≈ 0), N = <span class="nN"></span> stages, float:</p><table id="repTbl" class="cmp"></table></div>
+      </div>
+      <ul>
+        <li><b>Example t = 0.55, no repeats</b>: step 1 subtracts 0.5493 → z = 0.0007 (≥ 0), so step 2 is <i>forced</i> to subtract 0.2554 → z = −0.2547. All later steps together add back only 0.2507, so z gets stuck near −0.004 (~8 correct bits instead of ~16). Only <i>some</i> inputs fail, so this is a hard-to-find bug in hardware.</li>
+        <li><b>The fix</b>: doing shift 4 twice adds one extra θ₄ ≈ 0.0626 to the "remaining" sum of every earlier step. That covers the gaps of i = 1, 2, 3 (0.043 + 0.0047 + 0.0006) and extends the range from 1.055 to 1.118.</li>
+        <li><b>Why 4, 13, 40 (kₙ₊₁ = 3kₙ + 1)</b>: the gap at step i is ≈ 2⁻³ⁱ. After repeating k, the biggest gap left (at step k) is ≈ 2⁻³ᵏ. It only matters once you want precision finer than that, i.e. N &gt; ~3k, so the next repeat goes at 3k+1. Repeat 4 → fine up to ~12 iterations; also 13 → up to ~39; also 40 → beyond.</li>
+        <li><b>In hardware it's a constant</b>, fixed at design time by N, never decided at run time (only d is). Index the atanh LUT by stage k, so a repeated value is simply stored twice. For N ≤ 39: <code>shift(k) = k + 1 − (k ≥ 4) − (k ≥ 14)</code>. Unrolled design: one extra pipeline stage. Iterative design: the counter→shift mapping holds the same shift for one extra clock. Remember to include repeats in N and in K.</li>
+        <li>In this simulator, repeated shifts are the <span class="warn">orange i</span> in the iteration table.</li>
+      </ul>
+
+      <h2 style="margin-top:16px">How it works</h2>
+      <p>Iteration k (k = 0, 1, …, N−1) takes the registers from x<sub>k</sub>, y<sub>k</sub>, z<sub>k</sub> to x<sub>k+1</sub>, y<sub>k+1</sub>, z<sub>k+1</sub>, using shift i<sub>k</sub> (from the schedule 1, 2, 3, 4, 4, 5, …) and direction d<sub>k</sub> = ±1:</p>
+      <pre class="eq">x<sub>k+1</sub> = x<sub>k</sub> + d<sub>k</sub>·(y<sub>k</sub> >>> i<sub>k</sub>)
+y<sub>k+1</sub> = y<sub>k</sub> + d<sub>k</sub>·(x<sub>k</sub> >>> i<sub>k</sub>)          ← note: PLUS (circular CORDIC has minus here)
+z<sub>k+1</sub> = z<sub>k</sub> − d<sub>k</sub>·atanh(2<sup>−i<sub>k</sub></sup>)        ← atanh(2^−i) comes from a small ROM/LUT</pre>
+      <p>x<sub>0</sub>, y<sub>0</sub>, z<sub>0</sub> = start values; x<sub>N</sub>, y<sub>N</sub>, z<sub>N</sub> = final values (the result). Row k of the iteration table shows x<sub>k</sub>, y<sub>k</sub>, z<sub>k</sub>.</p>
+      <ul>
+        <li><b>Rotation mode</b> (cosh, sinh, exp): <code>d<sub>k</sub> = sign(z<sub>k</sub>)</code>, drives z → 0. Start <code>x<sub>0</sub> = 1/K, y<sub>0</sub> = 0, z<sub>0</sub> = t</code> → ends with <code>x<sub>N</sub> = cosh t, y<sub>N</sub> = sinh t, z<sub>N</sub> ≈ 0</code>. <code>exp t = x<sub>N</sub> + y<sub>N</sub></code>.</li>
+        <li><b>Vectoring mode</b> (atanh, ln, sqrt): <code>d<sub>k</sub> = −sign(y<sub>k</sub>)</code>, drives y → 0. Ends with <code>z<sub>N</sub> = z<sub>0</sub> + atanh(y<sub>0</sub>/x<sub>0</sub>)</code>, <code>x<sub>N</sub> = K·√(x<sub>0</sub>² − y<sub>0</sub>²)</code>, <code>y<sub>N</sub> ≈ 0</code>.
+          <br><code>ln w = 2·atanh((w−1)/(w+1))</code> → start <code>x<sub>0</sub> = w+1, y<sub>0</sub> = w−1, z<sub>0</sub> = 0</code>, result <code>2·z<sub>N</sub></code>.
+          <br><code>√w = √((w+¼)² − (w−¼)²)</code> → start <code>x<sub>0</sub> = w+¼, y<sub>0</sub> = w−¼, z<sub>0</sub> = 0</code>, result <code>x<sub>N</sub> · (1/K)</code>.</li>
+        <li><b>Shift starts at i=1</b> (atanh(2⁰)=∞), and <b>i = 4, 13, 40… must be repeated</b> (kₙ₊₁ = 3kₙ+1). Without repeats the remaining angles can't add up to cover the gap and it won't converge. In HW: the repeated stage is just an extra pipeline stage with the same shift.</li>
+        <li><b>Gain K</b> = ∏√(1 − 2⁻²ⁱ) ≈ 0.8282 (it's &lt;1, unlike circular's 1.647). Constant for fixed N → precompute.</li>
+        <li><b>Convergence range</b>: |t| ≤ Σatanh(2⁻ⁱ) ≈ 1.118 for rotation; |y/x| ≤ tanh(1.118) ≈ 0.807 for vectoring (ln: w ∈ ~[0.107, 9.36], sqrt: w ∈ ~[0.027, 2.34]). Larger inputs need range reduction (e.g. exp t = 2ᵏ·exp(t − k·ln2)).</li>
+        <li><b>FPGA tips</b>: <code>>>></code> on signed = arithmetic shift (floor, as in the table). Pick W so the largest |x|, |y| fits: integer bits = W − F − 1 (sign). Each step gains ~1 bit of precision, so N ≈ F is a good start. Unrolled = N pipeline stages, 1 result/clock; iterative = 1 stage + counter + shift mux, N clocks/result.</li>
+      </ul>
+    </section>
+  </div>
+</main>
+
+<script src="cordic.js"></script>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const ui = { func:$('func'), inp:$('inp'), n:$('n'), fmt:$('fmt'), frac:$('frac'), width:$('width'), step:$('step') };
+  let R = null, cur = 0, timer = null;
+  let manual = null, lastView = null;  // manual = {cx, cy, sc} set by wheel/drag/buttons; null = auto-follow
+
+  const hex = (v, w) => {
+    const m = Math.pow(2, w);
+    return "0x" + (((v % m) + m) % m).toString(16).toUpperCase().padStart(Math.ceil(w / 4), '0');
+  };
+  const f6 = (v) => (Number.isFinite(v) ? v.toFixed(6) : String(v));
+
+  // How each function is set up and which final register(s) hold the answer. N = last iteration.
+  const READ = {
+    cosh:  { init: 'x₀ = 1/K,  y₀ = 0,  z₀ = t',   out: ['x'],      expr: 'x_N',            tag: 'cosh' },
+    sinh:  { init: 'x₀ = 1/K,  y₀ = 0,  z₀ = t',   out: ['y'],      expr: 'y_N',            tag: 'sinh' },
+    exp:   { init: 'x₀ = 1/K,  y₀ = 0,  z₀ = t',   out: ['x', 'y'], expr: 'x_N + y_N',      tag: 'exp = x+y' },
+    atanh: { init: 'x₀ = 1,  y₀ = t,  z₀ = 0',     out: ['z'],      expr: 'z_N',            tag: 'atanh' },
+    ln:    { init: 'x₀ = w+1,  y₀ = w−1,  z₀ = 0', out: ['z'],      expr: '2 · z_N  (z << 1)', tag: 'ln = 2z' },
+    sqrt:  { init: 'x₀ = w+¼,  y₀ = w−¼,  z₀ = 0', out: ['x'],      expr: 'x_N · (1/K)',    tag: '√ = x/K' },
+  };
+  const REGS = {
+    rotation: [
+      ['x, y', 'The point being rotated along the hyperbola x² − y² = const. Starts at (1/K, 0), ends at <b>(cosh t, sinh t)</b>.'],
+      ['z', 'Hyperbolic angle still <b>left</b> to rotate. Starts at t, driven to 0.'],
+      ['d', 'Direction of this step = sign(z): rotate the way that shrinks z.'],
+      ['K', 'Every iteration stretches the vector a little; x₀ = 1/K cancels it up front.'],
+    ],
+    vectoring: [
+      ['x, y', 'The vector being rotated until it lies on the x-axis. y is driven to 0; x ends at <b>K·√(x₀² − y₀²)</b>.'],
+      ['z', 'Total angle rotated <b>so far</b>. Starts at 0, ends at <b>atanh(y₀/x₀)</b>.'],
+      ['d', 'Direction = −sign(y): always rotate toward the x-axis.'],
+      ['K', 'Gain on x; divide it out (multiply by 1/K) if you need the magnitude.'],
+    ],
+  };
+
+  function compute() {
+    const fixed = ui.fmt.value === 'fixed';
+    const opts = { n: +ui.n.value };
+    if (fixed) { opts.frac = +ui.frac.value; opts.width = +ui.width.value; }
+    try { R = Cordic.compute(ui.func.value, +ui.inp.value, opts); }
+    catch (e) { $('warn').innerHTML = `<span class="bad">${e.message}</span>`; return; }
+    ui.step.max = R.run.steps.length - 1;
+    cur = Math.min(cur, +ui.step.max);
+    renderStatic();
+    renderStep();
+  }
+
+  function renderStatic() {
+    const r = R.run, fx = r.fixed, W = fx && fx.width, F = fx && fx.frac;
+    const isVec = r.mode === 'vectoring';
+    $('inLabel').textContent = ['ln', 'sqrt'].includes(ui.func.value) ? 'w' : 't';
+    $('frac').disabled = $('width').disabled = !fx;
+    $('fmtInfo').innerHTML = fx
+      ? `Q${W - F}.${F} signed: range ±${Math.pow(2, W - F - 1)}, LSB = 2^-${F} ≈ ${Math.pow(2, -F).toExponential(2)}`
+      : 'IEEE double, no quantization (ideal reference)';
+
+    const st = r.steps, real = (v) => v / r.scale, N = st.length - 1, L = st[N];
+    const rd = READ[ui.func.value], arg = `${ui.func.value}(${ui.inp.value})`;
+    const sub = (s) => s.replace(/_N/g, `<sub>${N}</sub>`);
+    const raw = (reg) => (fx ? ` <span class="hex">= ${L[reg]} / 2^${F}  (${hex(L[reg], W)})</span>` : '');
+    const also = isVec
+      ? `z<sub>${N}</sub> = atanh(y₀/x₀) = ${f6(real(L.z))}<br>x<sub>${N}</sub>/K = √(x₀²−y₀²) = ${f6(real(L.x) / R.K)}`
+      : `cosh = x<sub>${N}</sub> = ${f6(real(L.x))}<br>sinh = y<sub>${N}</sub> = ${f6(real(L.y))}<br>exp = x+y = ${f6(real(L.x + L.y))}`;
+
+    const err = R.value - R.expected;
+    $('result').innerHTML = `
+      <span>setup</span><span>${rd.init}</span>
+      <span>read</span><span class="out">${arg} = ${sub(rd.expr)}</span>
+      ${rd.out.map((reg) => `<span>${reg}<sub>${N}</sub></span><span>${f6(real(L[reg]))}${raw(reg)}</span>`).join('')}
+      <span>CORDIC</span><span class="out">${f6(R.value)}</span>
+      <span>Math.*</span><span>${f6(R.expected)}</span>
+      <span>error</span><span class="${Math.abs(err) < 1e-3 ? 'ok' : 'bad'}">${err.toExponential(3)}</span>
+      ${fx ? `<span>≈ LSBs</span><span>${(err * Math.pow(2, F)).toFixed(2)}</span>` : ''}
+      <span>same run</span><span style="color:var(--mute)">${also}</span>`;
+
+    $('regsTitle').textContent = `What the registers mean (${r.mode} mode)`;
+    document.querySelectorAll('#modes [data-mode]').forEach((c) => c.classList.toggle('active', c.dataset.mode === r.mode));
+    $('regs').innerHTML = REGS[r.mode].map(([k, t]) => `<span>${k}</span><span>${t}</span>`).join('');
+
+    // "Why repeat" demo, live for current N (float, z path only).
+    const n = +ui.n.value, ang = (i) => Math.atanh(Math.pow(2, -i));
+    document.querySelectorAll('.nN').forEach((e) => (e.textContent = n));
+    $('gapTbl').innerHTML = '<tr><th>i</th><th>θᵢ</th><th>θᵢ₊₁ + … + θ<sub>N</sub></th><th>gap</th></tr>' +
+      [1, 2, 3, 4].filter((i) => i < n).map((i) => {
+        let rest = 0;
+        for (let j = i + 1; j <= n; j++) rest += ang(j);
+        const gap = ang(i) - rest;
+        return `<tr><td>${i}</td><td>${ang(i).toFixed(5)}</td><td>${rest.toFixed(5)}</td><td class="${gap > 0 ? 'bad' : 'ok'}">${gap.toFixed(5)}</td></tr>`;
+      }).join('');
+    const zEnd = (sched, t) => sched.reduce((z, i) => z - (z >= 0 ? 1 : -1) * ang(i), t);
+    const zCell = (z) => `<td class="${Math.abs(z) < 4 * Math.pow(2, -n) ? 'ok' : 'bad'}">${z.toExponential(1)}</td>`;
+    $('repTbl').innerHTML = '<tr><th>t</th><th>no repeats</th><th>with repeats</th></tr>' +
+      [0.5, 0.55, 0.6, 1.1].map((t) =>
+        `<tr><td>${t}</td>${zCell(zEnd(Cordic.schedule(n, false), t))}${zCell(zEnd(Cordic.schedule(n), t))}</tr>`).join('');
+
+    const w = [];
+    if (!R.inRange) w.push(`<span class="bad">Input outside convergence range (${isVec ? '|y/x| ≤ ' + R.ratioMax.toFixed(4) : '|t| ≤ ' + R.thetaMax.toFixed(4)}). Result is wrong: needs range reduction.</span>`);
+    if (r.overflow) w.push(`<span class="bad">Overflow: a register wrapped in ${W} bits. Increase W or lower F.</span>`);
+    $('warn').innerHTML = w.join('<br>') || '<span class="ok">Converged, no overflow.</span>';
+
+    const kq = fx ? Math.round(r.scale / R.K) : null;
+    $('consts').innerHTML = `
+      <span>schedule i</span><span>${r.sched.join(',')}</span>
+      <span>K</span><span>${R.K.toFixed(10)}</span>
+      <span>1/K</span><span>${(1 / R.K).toFixed(10)}${fx ? ` → ${kq} (${hex(kq, W)})` : ''}</span>
+      <span>θmax</span><span>${R.thetaMax.toFixed(6)}</span>`;
+
+    $('lut').textContent = r.sched.map((i, k) => {
+      const a = r.lut[k];
+      return fx ? `atanh_lut[${String(k).padStart(2)}] = ${W}'sd${a};  // ${hex(a, W)}  i=${i}  ${Math.atanh(Math.pow(2, -i)).toFixed(9)}`
+                : `stage ${String(k).padStart(2)}: i=${String(i).padStart(2)}  atanh(2^-${i}) = ${a.toFixed(12)}`;
+    }).join('\n');
+
+    $('resTitle').textContent = `Residual ${isVec ? '|y|' : '|z|'} per step (log₂) — ~1 bit/step`;
+
+    // Output register columns tagged in header; final output cells highlighted green.
+    const regs = ['x', 'y', 'z'];
+    const th = (reg, suf) => `<th>${reg}${suf}${rd.out.includes(reg) ? ` <span class="out">→ ${rd.tag}</span>` : ''}</th>`;
+    let html = `<tr><th>k</th><th>i</th><th>d</th>${regs.map((g) => th(g, '')).join('')}${fx ? regs.map((g) => th(g, ' hex')).join('') : ''}</tr>`;
+    st.forEach((s, k) => {
+      const rep = k > 0 && s.i === st[k - 1].i;
+      const cls = (reg, base) => `class="${base} ${k === N && rd.out.includes(reg) ? 'outcell' : ''}"`;
+      html += `<tr data-k="${k}" class="${rep ? 'rep' : ''}"><td>${k}</td><td>${s.i ?? '—'}</td><td>${s.d == null ? '—' : s.d > 0 ? '+1' : '−1'}</td>
+        ${regs.map((g) => `<td ${cls(g, '')}>${f6(real(s[g]))}</td>`).join('')}
+        ${fx ? regs.map((g) => `<td ${cls(g, 'hex')}>${hex(s[g], W)}</td>`).join('') : ''}</tr>`;
+    });
+    $('tbl').innerHTML = html;
+  }
+
+  function renderStep() {
+    const r = R.run, st = r.steps, s = st[cur], fx = r.fixed, real = (v) => v / r.scale;
+    ui.step.value = cur;
+    $('stepLbl').textContent = `${cur} / ${st.length - 1}`;
+    document.querySelectorAll('#tbl tr').forEach((tr) => tr.classList.toggle('cur', +tr.dataset.k === cur));
+    const row = document.querySelector(`#tbl tr[data-k="${cur}"]`);
+    if (row) {  // scroll only the table box, not the page
+      const box = row.closest('.tablewrap'), top = row.offsetTop - 30;
+      if (top < box.scrollTop || top + row.offsetHeight > box.scrollTop + box.clientHeight - 30) box.scrollTop = top;
+    }
+
+    // Show raw integer next to real value in fixed mode.
+    const v = (n) => (fx ? `${f6(real(n))} [${n}]` : f6(n));
+    const rd = READ[ui.func.value], N = st.length - 1, isRot = r.mode === 'rotation';
+    const zNote = isRot ? '   ← angle LEFT to rotate' : '   ← angle rotated SO FAR';
+    const sb = (n) => String(n).replace(/\d/g, (c) => '₀₁₂₃₄₅₆₇₈₉'[c]);  // 16 -> ₁₆
+    if (cur === 0) {
+      $('eq').textContent = `Initial registers (${r.mode} mode):  ${rd.init}\n x₀ = ${v(s.x)}\n y₀ = ${v(s.y)}\n z₀ = ${v(s.z)}${zNote}` +
+        (isRot ? `\n\n x₀ = 1/K so the gain cancels; z₀ = target angle t.` : `\n\n z will accumulate atanh(y₀/x₀) while y is driven to 0.`);
+    } else {
+      const p = st[cur - 1], ds = s.d > 0 ? '+' : '−', a = sb(cur - 1), b = sb(cur);
+      const why = isRot ? `z${a} = ${f6(real(p.z))} ${p.z >= 0 ? '≥' : '<'} 0` : `y${a} = ${f6(real(p.y))} ${p.y < 0 ? '<' : '≥'} 0`;
+      $('eq').textContent =
+        `Iteration k=${cur - 1}: row ${cur - 1} → row ${cur}, shift i${a} = ${s.i}${cur > 1 && st[cur - 1].i === s.i ? '  (REPEATED shift: see "Why is i repeated?" below)' : ''}\n` +
+        ` d${a} = ${s.d > 0 ? '+1' : '−1'}   because ${why}\n` +
+        ` x${b} = x${a} ${ds} (y${a} >>> ${s.i}) = ${v(p.x)} ${ds} ${v(s.ys)} = ${v(s.x)}\n` +
+        ` y${b} = y${a} ${ds} (x${a} >>> ${s.i}) = ${v(p.y)} ${ds} ${v(s.xs)} = ${v(s.y)}\n` +
+        ` z${b} = z${a} ${s.d > 0 ? '−' : '+'} atanh(2^-${s.i}) = ${v(p.z)} ${s.d > 0 ? '−' : '+'} ${v(s.a)} = ${v(s.z)}${zNote}` +
+        (cur === N ? `\n\n ⇒ DONE. OUTPUT  ${ui.func.value}(${ui.inp.value}) = ${rd.expr.replace(/_N/g, sb(N))} = ${f6(R.value)}` : '');
+    }
+    drawPlot();
+    drawResidual();
+  }
+
+  function setupCanvas(c) {
+    const dpr = window.devicePixelRatio || 1, w = c.clientWidth, h = +c.getAttribute('height');
+    c.width = w * dpr; c.height = h * dpr; c.style.height = h + 'px';
+    const g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { g, w, h };
+  }
+
+  function drawPlot() {
+    const { g, w, h } = setupCanvas($('plot'));
+    const r = R.run, real = (v) => v / r.scale;
+    const pts = r.steps.map((s) => [real(s.x), real(s.y)]);
+    const p = pts[cur];
+
+    // Overview view (step 0): whole path + origin.
+    const xMax = Math.max(1.2, ...pts.map((q) => q[0])) * 1.15;
+    const yMax = Math.max(0.6, ...pts.map((q) => Math.abs(q[1]))) * 1.25;
+    const sc0 = Math.min(w / (1.1 * xMax), h / (2 * yMax));  // equal aspect
+    let sc = sc0, cx = xMax / 2 - 0.05 * xMax, cy = 0;
+    if (cur > 0) {
+      // Zoom to the last move: it shrinks ~2x per step (shift i grows), so the view zooms in as k grows.
+      // Floor at a few LSBs in fixed-point so you can still see the quantized jumps.
+      const q = pts[cur - 1], d = Math.hypot(p[0] - q[0], p[1] - q[1]);
+      const minHalf = r.fixed ? 4 / r.scale : 1e-12;
+      sc = Math.max(sc0, Math.min(w, h) / (2 * 1.5 * Math.max(d, minHalf)));
+      cx = (p[0] + q[0]) / 2; cy = (p[1] + q[1]) / 2;
+    }
+    if (manual) ({ cx, cy, sc } = manual);
+    lastView = { cx, cy, sc, w, h };
+    const X = (x) => w / 2 + (x - cx) * sc, Y = (y) => h / 2 - (y - cy) * sc;
+    const xL = cx - w / 2 / sc, xR = cx + w / 2 / sc, yB = cy - h / 2 / sc, yT = cy + h / 2 / sc;
+
+    // Adaptive grid: 1/2/5 x 10^n spacing.
+    const nice = (s) => { const e = Math.pow(10, Math.floor(Math.log10(s))), m = s / e; return (m < 2 ? 1 : m < 5 ? 2 : 5) * e; };
+    const stp = nice((xR - xL) / 6), dec = Math.max(0, -Math.floor(Math.log10(stp)));
+    g.clearRect(0, 0, w, h);
+    g.lineWidth = 1; g.font = '11px system-ui';
+    for (let k = Math.ceil(xL / stp); k * stp <= xR; k++) {
+      const t = k * stp;
+      g.strokeStyle = k === 0 ? '#3a4756' : '#1c252f'; g.beginPath(); g.moveTo(X(t), 0); g.lineTo(X(t), h); g.stroke();
+      g.fillStyle = '#6b7785'; g.fillText(t.toFixed(dec), X(t) + 3, h - 5);
+    }
+    for (let k = Math.ceil(yB / stp); k * stp <= yT; k++) {
+      const t = k * stp;
+      g.strokeStyle = k === 0 ? '#3a4756' : '#1c252f'; g.beginPath(); g.moveTo(0, Y(t)); g.lineTo(w, Y(t)); g.stroke();
+      g.fillStyle = '#6b7785'; g.fillText(t.toFixed(dec), 4, Y(t) - 3);
+    }
+
+    // Hyperbola branches x^2 - y^2 = c (start and end invariants), sampled across the visible y range.
+    const hyper = (c2, col, label, ly) => {
+      g.fillStyle = col; g.fillText(label, 8, ly);
+      if (!(c2 > 0)) return;
+      g.strokeStyle = col; g.setLineDash([4, 4]); g.beginPath();
+      for (let j = 0; j <= 200; j++) {
+        const yy = yB + (yT - yB) * j / 200, xx = Math.sqrt(c2 + yy * yy);
+        j ? g.lineTo(X(xx), Y(yy)) : g.moveTo(X(xx), Y(yy));
+      }
+      g.stroke(); g.setLineDash([]);
+    };
+    const c0 = pts[0][0] ** 2 - pts[0][1] ** 2, cN = pts.at(-1)[0] ** 2 - pts.at(-1)[1] ** 2;
+    g.fillStyle = 'rgba(12,17,22,.85)'; g.fillRect(0, 0, 170, 40);  // legend backing over grid labels
+    hyper(c0, '#8592a0', `- - start  x²−y² = ${c0.toFixed(4)}`, 16);
+    hyper(cN, '#4f9fd8', `- - end    x²−y² = ${cN.toFixed(4)}`, 32);
+    g.fillStyle = '#ffb454';
+    const zl = `zoom ×${(sc / sc0).toPrecision(3)}${manual ? '  (manual, double-click = auto)' : '  (auto)'}`;
+    g.fillText(zl, w - g.measureText(zl).width - 8, 16);
+
+    // Radius toward origin (truncated so canvas coords stay small at deep zoom).
+    const L = Math.min(1, (2 * (xR - xL)) / Math.hypot(p[0], p[1]));
+    g.strokeStyle = '#ffb454'; g.beginPath(); g.moveTo(X(p[0] * (1 - L)), Y(p[1] * (1 - L))); g.lineTo(X(p[0]), Y(p[1])); g.stroke();
+
+    // Path up to cur. When zoomed deep, only last 8 steps: older points are far off-screen (huge canvas coords).
+    const from = sc / sc0 > 64 ? Math.max(0, cur - 8) : 0, seg = pts.slice(from, cur + 1);
+    g.strokeStyle = '#4fb3ff'; g.lineWidth = 1.5; g.beginPath();
+    seg.forEach((q, k) => (k ? g.lineTo(X(q[0]), Y(q[1])) : g.moveTo(X(q[0]), Y(q[1]))));
+    g.stroke();
+    seg.forEach((q, k) => {
+      const now = from + k === cur;
+      g.fillStyle = now ? '#ffb454' : '#4fb3ff';
+      g.beginPath(); g.arc(X(q[0]), Y(q[1]), now ? 5 : 3, 0, 7); g.fill();
+      if (!now && cur > 0) { g.fillStyle = '#6b7785'; g.fillText(`k=${from + k}`, X(q[0]) + 6, Y(q[1]) + 14); }
+    });
+    const pd = Math.max(4, dec + 2);
+    g.fillStyle = '#d7dee6'; g.fillText(`k=${cur} (${p[0].toFixed(pd)}, ${p[1].toFixed(pd)})`, X(p[0]) + 8, Y(p[1]) - 8);
+    if (cur === pts.length - 1) {
+      g.fillStyle = '#5fd18b'; g.font = 'bold 12px system-ui';
+      g.fillText(r.mode === 'rotation' ? '= (cosh t, sinh t)' : 'y ≈ 0:  x = K·√(x₀²−y₀²),  z = atanh(y₀/x₀)', X(p[0]) + 8, Y(p[1]) + 18);
+    }
+  }
+
+  function drawResidual() {
+    const { g, w, h } = setupCanvas($('res'));
+    const r = R.run, isVec = r.mode === 'vectoring';
+    const floor = r.fixed ? -r.fixed.frac - 1 : -40;
+    const vals = r.steps.map((s) => {
+      const v = Math.abs((isVec ? s.y : s.z) / r.scale);
+      return v > 0 ? Math.max(Math.log2(v), floor) : floor;
+    });
+    const top = Math.max(1, ...vals), bot = Math.min(...vals, -4);
+    const pl = 32, pb = 20, bw = (w - pl - 6) / vals.length;
+    const Y = (v) => 8 + (top - v) / (top - bot) * (h - pb - 8);
+    g.clearRect(0, 0, w, h);
+    g.fillStyle = '#8592a0'; g.font = '11px system-ui'; g.strokeStyle = '#2a3542';
+    for (let t = Math.ceil(bot / 4) * 4; t <= top; t += 4) {
+      g.beginPath(); g.moveTo(pl, Y(t)); g.lineTo(w, Y(t)); g.stroke();
+      g.fillText(t, 4, Y(t) + 4);
+    }
+    if (r.fixed) {  // 1 LSB line
+      g.strokeStyle = '#ff6b6b'; g.setLineDash([3, 3]); g.beginPath();
+      g.moveTo(pl, Y(-r.fixed.frac)); g.lineTo(w, Y(-r.fixed.frac)); g.stroke(); g.setLineDash([]);
+      g.fillStyle = '#ff6b6b'; g.fillText('1 LSB', w - 40, Y(-r.fixed.frac) - 3);
+    }
+    vals.forEach((v, k) => {
+      g.fillStyle = k === cur ? '#ffb454' : k < cur ? '#4fb3ff' : '#2d4a63';
+      const y0 = Y(Math.max(v, bot)), yb = Y(bot);
+      g.fillRect(pl + k * bw + 1, y0, Math.max(bw - 2, 1), yb - y0);
+    });
+    g.fillStyle = '#8592a0';
+    g.fillText('step k →', w - 60, h - 4);
+  }
+
+  // --- events
+  const go = (k) => { cur = Math.max(0, Math.min(+ui.step.max, k)); renderStep(); };
+  const stop = () => { clearInterval(timer); timer = null; $('play').textContent = 'Play'; };
+  $('first').onclick = () => { stop(); go(0); };
+  $('prev').onclick = () => { stop(); go(cur - 1); };
+  $('next').onclick = () => { stop(); go(cur + 1); };
+  $('last').onclick = () => { stop(); go(+ui.step.max); };
+  $('play').onclick = () => {
+    if (timer) return stop();
+    if (cur >= +ui.step.max) go(0);
+    $('play').textContent = 'Pause';
+    timer = setInterval(() => (cur >= +ui.step.max ? stop() : go(cur + 1)), 600);
+  };
+  ui.step.oninput = () => { stop(); go(+ui.step.value); };
+  $('tbl').onclick = (e) => { const tr = e.target.closest('tr[data-k]'); if (tr) { stop(); go(+tr.dataset.k); } };
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+    if (e.key === 'ArrowRight') { stop(); go(cur + 1); }
+    if (e.key === 'ArrowLeft') { stop(); go(cur - 1); }
+  });
+  const defaults = { cosh: 0.5, sinh: 0.5, exp: 0.8, atanh: 0.5, ln: 2, sqrt: 2 };
+  ui.func.onchange = () => { ui.inp.value = defaults[ui.func.value]; cur = 0; compute(); };
+  [ui.inp, ui.n, ui.fmt, ui.frac, ui.width].forEach((el) => (el.oninput = compute));
+  window.addEventListener('resize', () => R && renderStep());
+
+  // --- plot zoom / pan. Zoom keeps the world point under (mx, my) fixed.
+  const plot = $('plot');
+  const zoomAt = (f, mx, my) => {
+    const v = lastView; if (!v) return;
+    const wx = v.cx + (mx - v.w / 2) / v.sc, wy = v.cy - (my - v.h / 2) / v.sc;
+    const sc = Math.min(1e14, Math.max(1, v.sc * f));  // cap: beyond ~1e14 doubles lose precision
+    manual = { sc, cx: wx - (mx - v.w / 2) / sc, cy: wy + (my - v.h / 2) / sc };
+    drawPlot();
+  };
+  plot.addEventListener('wheel', (e) => {
+    e.preventDefault();
+    zoomAt(Math.exp(-e.deltaY * 0.0015), e.offsetX, e.offsetY);
+  }, { passive: false });
+  let drag = null;
+  plot.addEventListener('pointerdown', (e) => {
+    drag = { x: e.clientX, y: e.clientY }; plot.setPointerCapture(e.pointerId); plot.classList.add('dragging');
+  });
+  plot.addEventListener('pointermove', (e) => {
+    if (!drag || !lastView) return;
+    const v = lastView;
+    manual = { sc: v.sc, cx: v.cx - (e.clientX - drag.x) / v.sc, cy: v.cy + (e.clientY - drag.y) / v.sc };
+    drag = { x: e.clientX, y: e.clientY };
+    drawPlot();
+  });
+  const endDrag = () => { drag = null; plot.classList.remove('dragging'); };
+  plot.addEventListener('pointerup', endDrag);
+  plot.addEventListener('pointercancel', endDrag);
+  const auto = () => { manual = null; drawPlot(); };
+  plot.addEventListener('dblclick', auto);
+  $('zauto').onclick = auto;
+  $('zin').onclick = () => lastView && zoomAt(1.5, lastView.w / 2, lastView.h / 2);
+  $('zout').onclick = () => lastView && zoomAt(1 / 1.5, lastView.w / 2, lastView.h / 2);
+  compute();
+})();
+</script>
+</body>
+</html>
