@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="725" height="490" viewBox="0 0 725 490" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="725" height="490" fill="#ffffff"/>
+<text x="20" y="28" font-size="15" text-anchor="start" fill="#222" font-weight="bold">DE1 7-segment displays HEX3..HEX0 (segment index and FPGA pin)</text>
+<text x="96.0" y="56" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">HEX3</text>
+<rect x="61" y="70" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="96.0" y="82.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">0</text>
+<rect x="131" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="139.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">1</text>
+<rect x="131" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="139.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">2</text>
+<rect x="61" y="242" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="96.0" y="254.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">3</text>
+<rect x="45" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="53.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">4</text>
+<rect x="45" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="53.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">5</text>
+<rect x="61" y="156" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="96.0" y="168.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">6</text>
+<text x="40" y="286" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[0]</text>
+<text x="110" y="286" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_F4</text>
+<text x="40" y="302" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[1]</text>
+<text x="110" y="302" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D5</text>
+<text x="40" y="318" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[2]</text>
+<text x="110" y="318" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D6</text>
+<text x="40" y="334" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[3]</text>
+<text x="110" y="334" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_J4</text>
+<text x="40" y="350" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[4]</text>
+<text x="110" y="350" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_L8</text>
+<text x="40" y="366" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[5]</text>
+<text x="110" y="366" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_F3</text>
+<text x="40" y="382" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX3[6]</text>
+<text x="110" y="382" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D4</text>
+<text x="266.0" y="56" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">HEX2</text>
+<rect x="231" y="70" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="266.0" y="82.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">0</text>
+<rect x="301" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="309.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">1</text>
+<rect x="301" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="309.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">2</text>
+<rect x="231" y="242" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="266.0" y="254.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">3</text>
+<rect x="215" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="223.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">4</text>
+<rect x="215" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="223.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">5</text>
+<rect x="231" y="156" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="266.0" y="168.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">6</text>
+<text x="210" y="286" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[0]</text>
+<text x="280" y="286" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_G5</text>
+<text x="210" y="302" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[1]</text>
+<text x="280" y="302" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_G6</text>
+<text x="210" y="318" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[2]</text>
+<text x="280" y="318" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_C2</text>
+<text x="210" y="334" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[3]</text>
+<text x="280" y="334" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_C1</text>
+<text x="210" y="350" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[4]</text>
+<text x="280" y="350" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_E3</text>
+<text x="210" y="366" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[5]</text>
+<text x="280" y="366" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_E4</text>
+<text x="210" y="382" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX2[6]</text>
+<text x="280" y="382" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D3</text>
+<text x="436.0" y="56" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">HEX1</text>
+<rect x="401" y="70" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="436.0" y="82.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">0</text>
+<rect x="471" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="479.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">1</text>
+<rect x="471" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="479.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">2</text>
+<rect x="401" y="242" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="436.0" y="254.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">3</text>
+<rect x="385" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="393.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">4</text>
+<rect x="385" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="393.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">5</text>
+<rect x="401" y="156" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="436.0" y="168.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">6</text>
+<text x="380" y="286" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[0]</text>
+<text x="450" y="286" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_E1</text>
+<text x="380" y="302" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[1]</text>
+<text x="450" y="302" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_H6</text>
+<text x="380" y="318" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[2]</text>
+<text x="450" y="318" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_H5</text>
+<text x="380" y="334" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[3]</text>
+<text x="450" y="334" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_H4</text>
+<text x="380" y="350" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[4]</text>
+<text x="450" y="350" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_G3</text>
+<text x="380" y="366" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[5]</text>
+<text x="450" y="366" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D2</text>
+<text x="380" y="382" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX1[6]</text>
+<text x="450" y="382" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_D1</text>
+<text x="606.0" y="56" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">HEX0</text>
+<rect x="571" y="70" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="606.0" y="82.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">0</text>
+<rect x="641" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="649.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">1</text>
+<rect x="641" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="649.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">2</text>
+<rect x="571" y="242" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="606.0" y="254.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">3</text>
+<rect x="555" y="172" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="563.0" y="211.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">4</text>
+<rect x="555" y="86" width="16" height="70" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="563.0" y="125.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">5</text>
+<rect x="571" y="156" width="70" height="16" rx="3" fill="#e53935" stroke="#7f0000"/>
+<text x="606.0" y="168.0" font-size="11" text-anchor="middle" fill="#fff" font-weight="bold">6</text>
+<text x="550" y="286" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[0]</text>
+<text x="620" y="286" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_J2</text>
+<text x="550" y="302" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[1]</text>
+<text x="620" y="302" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_J1</text>
+<text x="550" y="318" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[2]</text>
+<text x="620" y="318" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_H2</text>
+<text x="550" y="334" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[3]</text>
+<text x="620" y="334" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_H1</text>
+<text x="550" y="350" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[4]</text>
+<text x="620" y="350" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_F2</text>
+<text x="550" y="366" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[5]</text>
+<text x="620" y="366" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_F1</text>
+<text x="550" y="382" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">HEX0[6]</text>
+<text x="620" y="382" font-size="10.5" text-anchor="start" fill="#555" font-weight="normal">PIN_E2</text>
+<text x="20" y="448" font-size="11.5" text-anchor="start" fill="#333" font-weight="normal">Active-low: drive 0 to light a segment, 1 to turn it off.</text>
+<text x="20" y="465" font-size="11.5" text-anchor="start" fill="#333" font-weight="normal">Decimal point is not connected. Segment order: 0 = top, then clockwise to 5, 6 = middle.</text>
+</svg>

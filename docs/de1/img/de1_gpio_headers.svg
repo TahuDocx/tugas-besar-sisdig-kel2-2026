@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="510" viewBox="0 0 1120 510" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+<rect width="1120" height="510" fill="#ffffff"/>
+<text x="20" y="28" font-size="15" text-anchor="start" fill="#222" font-weight="bold">DE1 40-pin expansion headers (pin numbering per manual Fig. 4.10)</text>
+<text x="220" y="58" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">JP1 (GPIO_0)</text>
+<rect x="190" y="70" width="60" height="386" rx="4" fill="#f3f3f3" stroke="#555"/>
+<rect x="198" y="75" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="86" font-size="9" text-anchor="end" fill="#888" font-weight="normal">1</text>
+<text x="162" y="86" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[0]  PIN_A13</text>
+<rect x="228" y="75" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="86" font-size="9" text-anchor="start" fill="#888" font-weight="normal">2</text>
+<text x="278" y="86" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[1]  PIN_B13</text>
+<rect x="198" y="94" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="105" font-size="9" text-anchor="end" fill="#888" font-weight="normal">3</text>
+<text x="162" y="105" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[2]  PIN_A14</text>
+<rect x="228" y="94" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="105" font-size="9" text-anchor="start" fill="#888" font-weight="normal">4</text>
+<text x="278" y="105" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[3]  PIN_B14</text>
+<rect x="198" y="113" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="124" font-size="9" text-anchor="end" fill="#888" font-weight="normal">5</text>
+<text x="162" y="124" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[4]  PIN_A15</text>
+<rect x="228" y="113" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="124" font-size="9" text-anchor="start" fill="#888" font-weight="normal">6</text>
+<text x="278" y="124" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[5]  PIN_B15</text>
+<rect x="198" y="132" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="143" font-size="9" text-anchor="end" fill="#888" font-weight="normal">7</text>
+<text x="162" y="143" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[6]  PIN_A16</text>
+<rect x="228" y="132" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="143" font-size="9" text-anchor="start" fill="#888" font-weight="normal">8</text>
+<text x="278" y="143" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[7]  PIN_B16</text>
+<rect x="198" y="151" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="162" font-size="9" text-anchor="end" fill="#888" font-weight="normal">9</text>
+<text x="162" y="162" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[8]  PIN_A17</text>
+<rect x="228" y="151" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="162" font-size="9" text-anchor="start" fill="#888" font-weight="normal">10</text>
+<text x="278" y="162" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[9]  PIN_B17</text>
+<rect x="198" y="170" width="14" height="14" fill="#e53935" stroke="#555"/>
+<text x="185" y="181" font-size="9" text-anchor="end" fill="#888" font-weight="normal">11</text>
+<text x="162" y="181" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">VCC5</text>
+<rect x="228" y="170" width="14" height="14" fill="#333" stroke="#555"/>
+<text x="255" y="181" font-size="9" text-anchor="start" fill="#888" font-weight="normal">12</text>
+<text x="278" y="181" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GND</text>
+<rect x="198" y="189" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="200" font-size="9" text-anchor="end" fill="#888" font-weight="normal">13</text>
+<text x="162" y="200" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[10]  PIN_A18</text>
+<rect x="228" y="189" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="200" font-size="9" text-anchor="start" fill="#888" font-weight="normal">14</text>
+<text x="278" y="200" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[11]  PIN_B18</text>
+<rect x="198" y="208" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="219" font-size="9" text-anchor="end" fill="#888" font-weight="normal">15</text>
+<text x="162" y="219" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[12]  PIN_A19</text>
+<rect x="228" y="208" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="219" font-size="9" text-anchor="start" fill="#888" font-weight="normal">16</text>
+<text x="278" y="219" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[13]  PIN_B19</text>
+<rect x="198" y="227" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="238" font-size="9" text-anchor="end" fill="#888" font-weight="normal">17</text>
+<text x="162" y="238" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[14]  PIN_A20</text>
+<rect x="228" y="227" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="238" font-size="9" text-anchor="start" fill="#888" font-weight="normal">18</text>
+<text x="278" y="238" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[15]  PIN_B20</text>
+<rect x="198" y="246" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="257" font-size="9" text-anchor="end" fill="#888" font-weight="normal">19</text>
+<text x="162" y="257" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[16]  PIN_C21</text>
+<rect x="228" y="246" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="257" font-size="9" text-anchor="start" fill="#888" font-weight="normal">20</text>
+<text x="278" y="257" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[17]  PIN_C22</text>
+<rect x="198" y="265" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="276" font-size="9" text-anchor="end" fill="#888" font-weight="normal">21</text>
+<text x="162" y="276" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[18]  PIN_D21</text>
+<rect x="228" y="265" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="276" font-size="9" text-anchor="start" fill="#888" font-weight="normal">22</text>
+<text x="278" y="276" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[19]  PIN_D22</text>
+<rect x="198" y="284" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="295" font-size="9" text-anchor="end" fill="#888" font-weight="normal">23</text>
+<text x="162" y="295" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[20]  PIN_E21</text>
+<rect x="228" y="284" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="295" font-size="9" text-anchor="start" fill="#888" font-weight="normal">24</text>
+<text x="278" y="295" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[21]  PIN_E22</text>
+<rect x="198" y="303" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="314" font-size="9" text-anchor="end" fill="#888" font-weight="normal">25</text>
+<text x="162" y="314" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[22]  PIN_F21</text>
+<rect x="228" y="303" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="314" font-size="9" text-anchor="start" fill="#888" font-weight="normal">26</text>
+<text x="278" y="314" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[23]  PIN_F22</text>
+<rect x="198" y="322" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="333" font-size="9" text-anchor="end" fill="#888" font-weight="normal">27</text>
+<text x="162" y="333" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[24]  PIN_G21</text>
+<rect x="228" y="322" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="333" font-size="9" text-anchor="start" fill="#888" font-weight="normal">28</text>
+<text x="278" y="333" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[25]  PIN_G22</text>
+<rect x="198" y="341" width="14" height="14" fill="#fb8c00" stroke="#555"/>
+<text x="185" y="352" font-size="9" text-anchor="end" fill="#888" font-weight="normal">29</text>
+<text x="162" y="352" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">VCC33</text>
+<rect x="228" y="341" width="14" height="14" fill="#333" stroke="#555"/>
+<text x="255" y="352" font-size="9" text-anchor="start" fill="#888" font-weight="normal">30</text>
+<text x="278" y="352" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GND</text>
+<rect x="198" y="360" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="371" font-size="9" text-anchor="end" fill="#888" font-weight="normal">31</text>
+<text x="162" y="371" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[26]  PIN_J21</text>
+<rect x="228" y="360" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="371" font-size="9" text-anchor="start" fill="#888" font-weight="normal">32</text>
+<text x="278" y="371" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[27]  PIN_J22</text>
+<rect x="198" y="379" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="390" font-size="9" text-anchor="end" fill="#888" font-weight="normal">33</text>
+<text x="162" y="390" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[28]  PIN_K21</text>
+<rect x="228" y="379" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="390" font-size="9" text-anchor="start" fill="#888" font-weight="normal">34</text>
+<text x="278" y="390" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[29]  PIN_K22</text>
+<rect x="198" y="398" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="409" font-size="9" text-anchor="end" fill="#888" font-weight="normal">35</text>
+<text x="162" y="409" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[30]  PIN_J19</text>
+<rect x="228" y="398" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="409" font-size="9" text-anchor="start" fill="#888" font-weight="normal">36</text>
+<text x="278" y="409" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[31]  PIN_J20</text>
+<rect x="198" y="417" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="428" font-size="9" text-anchor="end" fill="#888" font-weight="normal">37</text>
+<text x="162" y="428" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[32]  PIN_J18</text>
+<rect x="228" y="417" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="428" font-size="9" text-anchor="start" fill="#888" font-weight="normal">38</text>
+<text x="278" y="428" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[33]  PIN_K20</text>
+<rect x="198" y="436" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="185" y="447" font-size="9" text-anchor="end" fill="#888" font-weight="normal">39</text>
+<text x="162" y="447" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_0[34]  PIN_L19</text>
+<rect x="228" y="436" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="255" y="447" font-size="9" text-anchor="start" fill="#888" font-weight="normal">40</text>
+<text x="278" y="447" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_0[35]  PIN_L18</text>
+<text x="690" y="58" font-size="13" text-anchor="middle" fill="#222" font-weight="bold">JP2 (GPIO_1)</text>
+<rect x="660" y="70" width="60" height="386" rx="4" fill="#f3f3f3" stroke="#555"/>
+<rect x="668" y="75" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="86" font-size="9" text-anchor="end" fill="#888" font-weight="normal">1</text>
+<text x="632" y="86" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[0]  PIN_H12</text>
+<rect x="698" y="75" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="86" font-size="9" text-anchor="start" fill="#888" font-weight="normal">2</text>
+<text x="748" y="86" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[1]  PIN_H13</text>
+<rect x="668" y="94" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="105" font-size="9" text-anchor="end" fill="#888" font-weight="normal">3</text>
+<text x="632" y="105" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[2]  PIN_H14</text>
+<rect x="698" y="94" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="105" font-size="9" text-anchor="start" fill="#888" font-weight="normal">4</text>
+<text x="748" y="105" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[3]  PIN_G15</text>
+<rect x="668" y="113" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="124" font-size="9" text-anchor="end" fill="#888" font-weight="normal">5</text>
+<text x="632" y="124" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[4]  PIN_E14</text>
+<rect x="698" y="113" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="124" font-size="9" text-anchor="start" fill="#888" font-weight="normal">6</text>
+<text x="748" y="124" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[5]  PIN_E15</text>
+<rect x="668" y="132" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="143" font-size="9" text-anchor="end" fill="#888" font-weight="normal">7</text>
+<text x="632" y="143" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[6]  PIN_F15</text>
+<rect x="698" y="132" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="143" font-size="9" text-anchor="start" fill="#888" font-weight="normal">8</text>
+<text x="748" y="143" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[7]  PIN_G16</text>
+<rect x="668" y="151" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="162" font-size="9" text-anchor="end" fill="#888" font-weight="normal">9</text>
+<text x="632" y="162" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[8]  PIN_F12</text>
+<rect x="698" y="151" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="162" font-size="9" text-anchor="start" fill="#888" font-weight="normal">10</text>
+<text x="748" y="162" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[9]  PIN_F13</text>
+<rect x="668" y="170" width="14" height="14" fill="#e53935" stroke="#555"/>
+<text x="655" y="181" font-size="9" text-anchor="end" fill="#888" font-weight="normal">11</text>
+<text x="632" y="181" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">VCC5</text>
+<rect x="698" y="170" width="14" height="14" fill="#333" stroke="#555"/>
+<text x="725" y="181" font-size="9" text-anchor="start" fill="#888" font-weight="normal">12</text>
+<text x="748" y="181" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GND</text>
+<rect x="668" y="189" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="200" font-size="9" text-anchor="end" fill="#888" font-weight="normal">13</text>
+<text x="632" y="200" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[10]  PIN_C14</text>
+<rect x="698" y="189" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="200" font-size="9" text-anchor="start" fill="#888" font-weight="normal">14</text>
+<text x="748" y="200" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[11]  PIN_D14</text>
+<rect x="668" y="208" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="219" font-size="9" text-anchor="end" fill="#888" font-weight="normal">15</text>
+<text x="632" y="219" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[12]  PIN_D15</text>
+<rect x="698" y="208" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="219" font-size="9" text-anchor="start" fill="#888" font-weight="normal">16</text>
+<text x="748" y="219" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[13]  PIN_D16</text>
+<rect x="668" y="227" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="238" font-size="9" text-anchor="end" fill="#888" font-weight="normal">17</text>
+<text x="632" y="238" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[14]  PIN_C17</text>
+<rect x="698" y="227" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="238" font-size="9" text-anchor="start" fill="#888" font-weight="normal">18</text>
+<text x="748" y="238" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[15]  PIN_C18</text>
+<rect x="668" y="246" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="257" font-size="9" text-anchor="end" fill="#888" font-weight="normal">19</text>
+<text x="632" y="257" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[16]  PIN_C19</text>
+<rect x="698" y="246" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="257" font-size="9" text-anchor="start" fill="#888" font-weight="normal">20</text>
+<text x="748" y="257" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[17]  PIN_C20</text>
+<rect x="668" y="265" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="276" font-size="9" text-anchor="end" fill="#888" font-weight="normal">21</text>
+<text x="632" y="276" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[18]  PIN_D19</text>
+<rect x="698" y="265" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="276" font-size="9" text-anchor="start" fill="#888" font-weight="normal">22</text>
+<text x="748" y="276" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[19]  PIN_D20</text>
+<rect x="668" y="284" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="295" font-size="9" text-anchor="end" fill="#888" font-weight="normal">23</text>
+<text x="632" y="295" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[20]  PIN_E20</text>
+<rect x="698" y="284" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="295" font-size="9" text-anchor="start" fill="#888" font-weight="normal">24</text>
+<text x="748" y="295" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[21]  PIN_F20</text>
+<rect x="668" y="303" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="314" font-size="9" text-anchor="end" fill="#888" font-weight="normal">25</text>
+<text x="632" y="314" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[22]  PIN_E19</text>
+<rect x="698" y="303" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="314" font-size="9" text-anchor="start" fill="#888" font-weight="normal">26</text>
+<text x="748" y="314" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[23]  PIN_E18</text>
+<rect x="668" y="322" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="333" font-size="9" text-anchor="end" fill="#888" font-weight="normal">27</text>
+<text x="632" y="333" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[24]  PIN_G20</text>
+<rect x="698" y="322" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="333" font-size="9" text-anchor="start" fill="#888" font-weight="normal">28</text>
+<text x="748" y="333" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[25]  PIN_G18</text>
+<rect x="668" y="341" width="14" height="14" fill="#fb8c00" stroke="#555"/>
+<text x="655" y="352" font-size="9" text-anchor="end" fill="#888" font-weight="normal">29</text>
+<text x="632" y="352" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">VCC33</text>
+<rect x="698" y="341" width="14" height="14" fill="#333" stroke="#555"/>
+<text x="725" y="352" font-size="9" text-anchor="start" fill="#888" font-weight="normal">30</text>
+<text x="748" y="352" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GND</text>
+<rect x="668" y="360" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="371" font-size="9" text-anchor="end" fill="#888" font-weight="normal">31</text>
+<text x="632" y="371" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[26]  PIN_G17</text>
+<rect x="698" y="360" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="371" font-size="9" text-anchor="start" fill="#888" font-weight="normal">32</text>
+<text x="748" y="371" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[27]  PIN_H17</text>
+<rect x="668" y="379" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="390" font-size="9" text-anchor="end" fill="#888" font-weight="normal">33</text>
+<text x="632" y="390" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[28]  PIN_J15</text>
+<rect x="698" y="379" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="390" font-size="9" text-anchor="start" fill="#888" font-weight="normal">34</text>
+<text x="748" y="390" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[29]  PIN_H18</text>
+<rect x="668" y="398" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="409" font-size="9" text-anchor="end" fill="#888" font-weight="normal">35</text>
+<text x="632" y="409" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[30]  PIN_N22</text>
+<rect x="698" y="398" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="409" font-size="9" text-anchor="start" fill="#888" font-weight="normal">36</text>
+<text x="748" y="409" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[31]  PIN_N21</text>
+<rect x="668" y="417" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="428" font-size="9" text-anchor="end" fill="#888" font-weight="normal">37</text>
+<text x="632" y="428" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[32]  PIN_P15</text>
+<rect x="698" y="417" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="428" font-size="9" text-anchor="start" fill="#888" font-weight="normal">38</text>
+<text x="748" y="428" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[33]  PIN_N15</text>
+<rect x="668" y="436" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="655" y="447" font-size="9" text-anchor="end" fill="#888" font-weight="normal">39</text>
+<text x="632" y="447" font-size="10.5" text-anchor="end" fill="#222" font-weight="normal">GPIO_1[34]  PIN_P17</text>
+<rect x="698" y="436" width="14" height="14" fill="#ffd54f" stroke="#555"/>
+<text x="725" y="447" font-size="9" text-anchor="start" fill="#888" font-weight="normal">40</text>
+<text x="748" y="447" font-size="10.5" text-anchor="start" fill="#222" font-weight="normal">GPIO_1[35]  PIN_P18</text>
+<text x="20" y="490" font-size="11.5" text-anchor="start" fill="#333" font-weight="normal">Pin 1 = GPIO[0]. VCC5 = +5 V, VCC33 = +3.3 V. Every data pin has a 47 Ω series resistor; FPGA I/O is 3.3 V LVTTL.</text>
+</svg>
