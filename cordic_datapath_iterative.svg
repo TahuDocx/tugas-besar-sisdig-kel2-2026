@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 790" width="1000" height="790" font-family="Segoe UI, Arial, sans-serif">
-  <title>Hyperbolic CORDIC iterative datapath (Q2.16, W=18, N=18)</title>
+  <title>Hyperbolic CORDIC iterative datapath (Q2.14, W=16, N=16)</title>
   <defs>
     <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker>
     <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d9480f"/></marker>
@@ -19,7 +19,7 @@
   </defs>
 
   <text x="20" y="26" font-size="18" font-weight="700" fill="#222">Hyperbolic CORDIC: iterative datapath</text>
-  <text x="20" y="46" font-size="12" fill="#444">Q2.16 (W = 18 bit) · N = 18 iterations · shifts s = 1 2 3 4 4 5 … 12 13 13 14 15 16 · one iteration per clock · x<tspan baseline-shift="sub" font-size="9">k+1</tspan> = x<tspan baseline-shift="sub" font-size="9">k</tspan> + d·(y<tspan baseline-shift="sub" font-size="9">k</tspan> &gt;&gt;&gt; s), y<tspan baseline-shift="sub" font-size="9">k+1</tspan> = y<tspan baseline-shift="sub" font-size="9">k</tspan> + d·(x<tspan baseline-shift="sub" font-size="9">k</tspan> &gt;&gt;&gt; s), z<tspan baseline-shift="sub" font-size="9">k+1</tspan> = z<tspan baseline-shift="sub" font-size="9">k</tspan> − d·atanh(2<tspan baseline-shift="super" font-size="9">−s</tspan>)</text>
+  <text x="20" y="46" font-size="12" fill="#444">Q2.14 (W = 16 bit) · N = 16 iterations · shifts s = 1 2 3 4 4 5 … 12 13 13 14 · one iteration per clock · x<tspan baseline-shift="sub" font-size="9">k+1</tspan> = x<tspan baseline-shift="sub" font-size="9">k</tspan> + d·(y<tspan baseline-shift="sub" font-size="9">k</tspan> &gt;&gt;&gt; s), y<tspan baseline-shift="sub" font-size="9">k+1</tspan> = y<tspan baseline-shift="sub" font-size="9">k</tspan> + d·(x<tspan baseline-shift="sub" font-size="9">k</tspan> &gt;&gt;&gt; s), z<tspan baseline-shift="sub" font-size="9">k+1</tspan> = z<tspan baseline-shift="sub" font-size="9">k</tspan> − d·atanh(2<tspan baseline-shift="super" font-size="9">−s</tspan>)</text>
 
   <g transform="translate(0,60)">
     <!-- ===== external inputs ===== -->
@@ -40,13 +40,13 @@
 
     <!-- ===== registers ===== -->
     <rect class="blk" x="145" y="130" width="110" height="40"/>
-    <text x="200" y="148" class="t b">X register</text><text x="200" y="163" class="s">18 b · Q2.16</text>
+    <text x="200" y="148" class="t b">X register</text><text x="200" y="163" class="s">16 b · Q2.14</text>
     <polygon points="145,160 153,165 145,170" fill="none" stroke="#222"/>
     <rect class="blk" x="365" y="130" width="110" height="40"/>
-    <text x="420" y="148" class="t b">Y register</text><text x="420" y="163" class="s">18 b · Q2.16</text>
+    <text x="420" y="148" class="t b">Y register</text><text x="420" y="163" class="s">16 b · Q2.14</text>
     <polygon points="365,160 373,165 365,170" fill="none" stroke="#222"/>
     <rect class="blk" x="585" y="130" width="110" height="40"/>
-    <text x="640" y="148" class="t b">Z register</text><text x="640" y="163" class="s">18 b · Q2.16</text>
+    <text x="640" y="148" class="t b">Z register</text><text x="640" y="163" class="s">16 b · Q2.14</text>
     <polygon points="585,160 593,165 585,170" fill="none" stroke="#222"/>
 
     <!-- ===== register outputs, taps to shifters ===== -->
@@ -58,9 +58,9 @@
     <polyline class="w" points="420,200 370,200 370,230" marker-end="url(#a)"/>
     <polyline class="w" points="640,170 640,330" marker-end="url(#a)"/>
     <!-- bus-width marks -->
-    <line class="w" x1="194" y1="256" x2="206" y2="244"/><text x="210" y="254" class="s l">18</text>
-    <line class="w" x1="414" y1="321" x2="426" y2="309"/><text x="430" y="319" class="s l">18</text>
-    <line class="w" x1="634" y1="256" x2="646" y2="244"/><text x="650" y="254" class="s l">18</text>
+    <line class="w" x1="194" y1="256" x2="206" y2="244"/><text x="210" y="254" class="s l">16</text>
+    <line class="w" x1="414" y1="321" x2="426" y2="309"/><text x="430" y="319" class="s l">16</text>
+    <line class="w" x1="634" y1="256" x2="646" y2="244"/><text x="650" y="254" class="s l">16</text>
 
     <!-- ===== barrel shifters ===== -->
     <rect class="blk" x="230" y="230" width="80" height="40"/>
@@ -98,12 +98,12 @@
     <!-- ===== direction logic ===== -->
     <rect class="ctl" x="740" y="280" width="180" height="50"/>
     <text x="830" y="296" class="t b">Direction logic</text>
-    <text x="830" y="311" class="t m" font-size="11">d = mode ? y[17] : ~z[17]</text>
+    <text x="830" y="311" class="t m" font-size="11">d = mode ? y[15] : ~z[15]</text>
     <text x="830" y="325" class="s">d=1: x+ y+ z−  ·  d=0: x− y− z+</text>
     <polyline class="c" points="790,250 790,280" marker-end="url(#ao)"/><text x="790" y="244" class="s o">mode</text>
     <circle class="doto" cx="420" cy="185" r="3"/>
-    <polyline class="c" points="420,185 840,185 840,280" marker-end="url(#ao)"/><text x="846" y="244" class="s o l">y[17]</text>
-    <polyline class="c" points="695,150 885,150 885,280" marker-end="url(#ao)"/><text x="891" y="244" class="s o l">z[17]</text>
+    <polyline class="c" points="420,185 840,185 840,280" marker-end="url(#ao)"/><text x="846" y="244" class="s o l">y[15]</text>
+    <polyline class="c" points="695,150 885,150 885,280" marker-end="url(#ao)"/><text x="891" y="244" class="s o l">z[15]</text>
     <text x="760" y="145" class="s o l">sign bits</text>
     <!-- d bus to the three add/sub units -->
     <polyline class="c" points="760,330 760,395 253,395 253,366" marker-end="url(#ao)"/>
@@ -114,27 +114,27 @@
     <!-- ===== ROM ===== -->
     <rect class="ctl" x="740" y="420" width="180" height="85"/>
     <text x="830" y="437" class="t b">atanh / shift ROM</text>
-    <text x="830" y="451" class="s">18 words, address = k</text>
-    <text x="830" y="465" class="s">out: s[k] (5 b), A[k] (18 b)</text>
-    <text x="830" y="479" class="s">A[k] = round(atanh(2^−s[k]) · 2¹⁶)</text>
-    <text x="830" y="495" class="s">k = 3, 4 → s = 4, A = 4101 (repeat)</text>
+    <text x="830" y="451" class="s">16 words, address = k</text>
+    <text x="830" y="465" class="s">out: s[k] (4 b), A[k] (16 b)</text>
+    <text x="830" y="479" class="s">A[k] = round(atanh(2^−s[k]) · 2¹⁴)</text>
+    <text x="830" y="495" class="s">k = 3, 4 → s = 4, A = 1025 (repeat)</text>
     <!-- A[k] to the Z add/sub -->
     <polyline class="w" points="740,455 715,455 715,310 685,310 685,330" marker-end="url(#a)"/>
     <text x="700" y="450" class="s b">A[k]</text>
-    <line class="w" x1="709" y1="386" x2="721" y2="374"/><text x="725" y="384" class="s l">18</text>
+    <line class="w" x1="709" y1="386" x2="721" y2="374"/><text x="725" y="384" class="s l">16</text>
     <!-- s[k] to both shifters -->
     <polyline class="c" points="920,440 945,440 945,215 300,215 300,230" marker-end="url(#ao)"/>
     <circle class="doto" cx="400" cy="215" r="3"/><polyline class="c" points="400,215 400,230" marker-end="url(#ao)"/>
     <text x="952" y="330" class="s o l">s[k]</text>
-    <line class="c" x1="594" y1="221" x2="606" y2="209" style="stroke-dasharray:none"/><text x="600" y="207" class="s o">5</text>
+    <line class="c" x1="594" y1="221" x2="606" y2="209" style="stroke-dasharray:none"/><text x="600" y="207" class="s o">4</text>
 
     <!-- ===== controller ===== -->
     <rect class="ctl" x="740" y="525" width="180" height="85"/>
     <text x="830" y="543" class="t b">Controller (FSM)</text>
     <text x="830" y="559" class="s">IDLE → ITER → DONE</text>
-    <text x="830" y="574" class="s">counter k = 0 … 17</text>
+    <text x="830" y="574" class="s">counter k = 0 … 15</text>
     <text x="830" y="589" class="s">registers update every clock in ITER</text>
-    <polyline class="c" points="830,525 830,505" marker-end="url(#ao)"/><text x="838" y="519" class="s o l">k (5 b)</text>
+    <polyline class="c" points="830,525 830,505" marker-end="url(#ao)"/><text x="838" y="519" class="s o l">k (4 b)</text>
     <polyline class="c" points="985,550 920,550" marker-end="url(#ao)"/><text x="958" y="544" class="s o">start</text>
     <polyline class="c" points="920,592 985,592" marker-end="url(#ao)"/><text x="958" y="586" class="s o">done</text>
     <!-- load = mux select -->
@@ -145,15 +145,15 @@
 
     <!-- ===== post-processing ===== -->
     <rect x="20" y="625" width="700" height="95" fill="#fafafa" stroke="#888" stroke-dasharray="6 4"/>
-    <text x="35" y="645" class="t b l">Post-processing (after k = 17, outside the loop)</text>
-    <text x="35" y="664" class="t l" font-size="11">cosh t = x_N · sinh t = y_N · exp t = x_N + y_N (one 19-bit adder; value reaches 3.06)</text>
-    <text x="35" y="682" class="t l" font-size="11">atanh a = z_N · ln w = z_N &lt;&lt; 1 · √w = x_N × 1/K (1/K = 79135 = 0x1351F, one constant multiply)</text>
+    <text x="35" y="645" class="t b l">Post-processing (after k = 15, outside the loop)</text>
+    <text x="35" y="664" class="t l" font-size="11">cosh t = x_N · sinh t = y_N · exp t = x_N + y_N (one 17-bit adder; value reaches 3.06)</text>
+    <text x="35" y="682" class="t l" font-size="11">atanh a = z_N · ln w = z_N &lt;&lt; 1 · √w = x_N × 1/K (1/K = 19784 = 0x4D48, one constant multiply)</text>
     <text x="35" y="700" class="t l" font-size="11">Start values: rotation x₀ = 1/K, y₀ = 0, z₀ = t · atanh x₀ = 1, y₀ = a · ln x₀ = w+1, y₀ = w−1 · √ x₀ = w+¼, y₀ = w−¼</text>
     <text x="35" y="714" class="s l">(vectoring: z₀ = 0, mode = 1; rotation: mode = 0)</text>
 
     <!-- ===== legend ===== -->
     <rect x="740" y="625" width="240" height="95" fill="#fff" stroke="#bbb"/>
-    <line class="w" x1="752" y1="643" x2="782" y2="643"/><text x="790" y="647" class="s l">data bus (18 b)</text>
+    <line class="w" x1="752" y1="643" x2="782" y2="643"/><text x="790" y="647" class="s l">data bus (16 b)</text>
     <line class="c" x1="752" y1="661" x2="782" y2="661"/><text x="790" y="665" class="s l">control signal</text>
     <circle class="dot" cx="767" cy="679" r="3"/><text x="790" y="683" class="s l">junction (connected)</text>
     <line class="w" x1="761" y1="703" x2="773" y2="691"/><text x="790" y="701" class="s l">bus width · crossing without dot</text>

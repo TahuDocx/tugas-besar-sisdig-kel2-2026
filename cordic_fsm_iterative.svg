@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 660" width="1000" height="660" font-family="Segoe UI, Arial, sans-serif">
+  <title>Hyperbolic CORDIC iterative controller: state diagram (N=16)</title>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#222"/></marker>
+    <marker id="ao" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#d9480f"/></marker>
+    <style>
+      .w { stroke:#222; stroke-width:1.6; fill:none; }
+      .c { stroke:#d9480f; stroke-width:1.4; fill:none; stroke-dasharray:5 3; }
+      .st { fill:#fff4e6; stroke:#d9480f; stroke-width:1.8; }
+      .t { font-size:12px; fill:#222; text-anchor:middle; }
+      .b { font-weight:700; }
+      .s { font-size:10px; fill:#444; text-anchor:middle; }
+      .h { font-size:15px; }
+      .m { font-family:Consolas, monospace; }
+      .o { fill:#d9480f; }
+      .l { text-anchor:start; }
+      .grid { stroke:#999; stroke-width:1; }
+      .hd { fill:#eef3f8; stroke:#222; stroke-width:1.2; }
+    </style>
+  </defs>
+
+  <text x="20" y="26" font-size="18" font-weight="700" fill="#222">Hyperbolic CORDIC: controller (FSM) state diagram</text>
+  <text x="20" y="46" font-size="12" fill="#444">Drives the iterative datapath (cordic_datapath_iterative.svg) · N = 16 iterations, k = 0 … N−1 · one iteration per clock · latency N + 1 clocks from start · Res synchronous, active high</text>
+
+  <!-- ===== reset entry ===== -->
+  <polyline class="w" points="40,260 136,260" marker-end="url(#a)"/>
+  <text x="85" y="252" class="t m">Res = 1</text>
+
+  <!-- ===== states ===== -->
+  <circle class="st" cx="200" cy="260" r="62"/>
+  <text x="200" y="246" class="t b h">IDLE</text>
+  <text x="200" y="264" class="s m">load = 1, k_clr = 1</text>
+  <text x="200" y="278" class="s m">en = start</text>
+  <text x="200" y="292" class="s m">done = 0</text>
+
+  <circle class="st" cx="500" cy="260" r="62"/>
+  <text x="500" y="246" class="t b h">ITER</text>
+  <text x="500" y="264" class="s m">load = 0, en = 1</text>
+  <text x="500" y="278" class="s m">k_inc = 1</text>
+  <text x="500" y="292" class="s m">done = 0</text>
+
+  <circle class="st" cx="800" cy="260" r="62"/>
+  <text x="800" y="246" class="t b h">DONE</text>
+  <text x="800" y="264" class="s m">en = 0</text>
+  <text x="800" y="278" class="s m">done = 1</text>
+  <text x="800" y="292" class="s">x, y, z held</text>
+
+  <!-- ===== self loops ===== -->
+  <path class="w" d="M175,203 C140,110 260,110 225,203" marker-end="url(#a)"/>
+  <text x="200" y="120" class="t m">start = 0</text>
+  <text x="200" y="104" class="s">hold result of last run</text>
+
+  <path class="w" d="M475,203 C440,110 560,110 525,203" marker-end="url(#a)"/>
+  <text x="500" y="120" class="t m">k &lt; N−1</text>
+  <text x="500" y="104" class="s">x, y, z ← next · k ← k + 1</text>
+
+  <path class="w" d="M775,203 C740,110 860,110 825,203" marker-end="url(#a)"/>
+  <text x="800" y="120" class="t m">start = 1</text>
+  <text x="800" y="104" class="s">wait for start to drop</text>
+
+  <!-- ===== transitions ===== -->
+  <polyline class="w" points="262,260 436,260" marker-end="url(#a)"/>
+  <text x="349" y="252" class="t m">start = 1</text>
+  <text x="349" y="278" class="s">x, y, z ← x₀, y₀, z₀ · k ← 0</text>
+
+  <polyline class="w" points="562,260 736,260" marker-end="url(#a)"/>
+  <text x="649" y="252" class="t m">k = N−1 (15)</text>
+  <text x="649" y="278" class="s">last update · x, y, z ← next</text>
+
+  <path class="w" d="M770,314 Q500,480 230,314" marker-end="url(#a)"/>
+  <text x="500" y="420" class="t m">start = 0</text>
+  <text x="500" y="436" class="s">handshake: no re-trigger while start is held high</text>
+
+  <!-- ===== output table ===== -->
+  <g transform="translate(110,470)">
+    <text x="0" y="-8" class="t b l">Moore outputs per state (IDLE en is Mealy: en = start)</text>
+    <rect class="hd" x="0" y="0" width="780" height="24"/>
+    <rect x="0" y="24" width="780" height="78" fill="none" stroke="#222" stroke-width="1.2"/>
+    <line class="grid" x1="0" y1="50" x2="780" y2="50"/><line class="grid" x1="0" y1="76" x2="780" y2="76"/>
+    <line class="grid" x1="90" y1="0" x2="90" y2="102"/><line class="grid" x1="170" y1="0" x2="170" y2="102"/>
+    <line class="grid" x1="250" y1="0" x2="250" y2="102"/><line class="grid" x1="330" y1="0" x2="330" y2="102"/>
+    <line class="grid" x1="410" y1="0" x2="410" y2="102"/><line class="grid" x1="490" y1="0" x2="490" y2="102"/>
+    <text x="45" y="16" class="t b">state</text><text x="130" y="16" class="t b m">load</text><text x="210" y="16" class="t b m">en</text>
+    <text x="290" y="16" class="t b m">k_clr</text><text x="370" y="16" class="t b m">k_inc</text><text x="450" y="16" class="t b m">done</text>
+    <text x="635" y="16" class="t b">next state</text>
+
+    <text x="45" y="42" class="t b">IDLE</text><text x="130" y="42" class="t m">1</text><text x="210" y="42" class="t m">start</text>
+    <text x="290" y="42" class="t m">1</text><text x="370" y="42" class="t m">0</text><text x="450" y="42" class="t m">0</text>
+    <text x="635" y="42" class="t m">start ? ITER : IDLE</text>
+
+    <text x="45" y="68" class="t b">ITER</text><text x="130" y="68" class="t m">0</text><text x="210" y="68" class="t m">1</text>
+    <text x="290" y="68" class="t m">0</text><text x="370" y="68" class="t m">1</text><text x="450" y="68" class="t m">0</text>
+    <text x="635" y="68" class="t m">(k = N−1) ? DONE : ITER</text>
+
+    <text x="45" y="94" class="t b">DONE</text><text x="130" y="94" class="t m">–</text><text x="210" y="94" class="t m">0</text>
+    <text x="290" y="94" class="t m">0</text><text x="370" y="94" class="t m">0</text><text x="450" y="94" class="t m">1</text>
+    <text x="635" y="94" class="t m">start ? DONE : IDLE</text>
+
+    <text x="0" y="124" class="s l">load → x/y/z input-mux select · en → X/Y/Z register enable · k_clr → counter Res · k_inc → counter En · k (4 b) → ROM address + compare with N−1 · “–” = don’t care</text>
+    <text x="0" y="140" class="s l">One-hot encoding suggested (3 flip-flops) [MC 5]. Encoded binary needs 2 flip-flops.</text>
+  </g>
+</svg>
