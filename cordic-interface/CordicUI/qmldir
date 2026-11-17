@@ -1,0 +1,3 @@
+module CordicUI
+Main 1.0 Main.qml
+SimWindow 1.0 SimWindow.qml

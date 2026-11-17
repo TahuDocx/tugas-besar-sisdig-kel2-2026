@@ -1,0 +1,16 @@
+# Python virtual environment (recreate: see CLAUDE.md)
+.venv/
+venv/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# QML compiled caches
+*.qmlc
+*.jsc
+
+# QML language server / Qt Creator local files
+.qmlls.ini
+*.pyproject.user
+*.qtds
