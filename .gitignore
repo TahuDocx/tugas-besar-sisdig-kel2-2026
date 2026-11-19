@@ -1,1 +1,5 @@
 papers/
+
+# Python bytecode cache (rebuilt automatically on import)
+__pycache__/
+*.pyc
