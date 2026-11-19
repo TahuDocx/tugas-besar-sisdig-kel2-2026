@@ -5,17 +5,18 @@ use ieee.std_logic_1164.all;
 -- Define entity
 entity fullAdder16bit is
 	port	(
-				A, B	:		in		std_logic_vector (15 downto 0);	-- data masukan A dan B
-				Cin		:		in		std_logic;								-- carry masukan
-				S			:		out		std_logic_vector (15 downto 0);	-- hasil penjumlahan
-				Cout	:		out		std_logic								-- carry luaran
-			);
+				A		:		in		std_logic_vector (15 downto 0);	-- data masukan A
+				B		:		in		std_logic_vector (15 downto 0);	-- data masukan B
+				Cin		:		in		std_logic;						-- carry masukan
+				S		:		out		std_logic_vector (15 downto 0);	-- hasil penjumlahan
+				Cout	:		out		std_logic						-- carry luaran
+				);
 end fullAdder16bit;
 
 -- Define architecture
 architecture behavioral of fullAdder16bit is
 	-- carry antar bit. v_carry(0) adalah Cin, v_carry(16) adalah Cout.
-	signal v_carry	:	std_logic_vector (16 downto 0);
+	signal	v_carry	:	std_logic_vector (16 downto 0);
 
 begin
 	-- carry bit pertama berasal dari masukan Cin.

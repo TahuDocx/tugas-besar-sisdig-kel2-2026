@@ -24,23 +24,23 @@
 -- I -> I (di sebelah kiri, tidak seperti angka 1)
 -- J -> j (tanpa titik)
 
-
+-- Library
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-
+-- Define entity
 entity asciiHex is
 	port	(
-				i_ascii		:		in		std_logic_vector	(7 downto 0);
-				0_hex		:		out		std_logic_vector	(6 downto 0)
-			);
+				i_ascii	:	in	std_logic_vector(7 downto 0);	-- ASCII code of the received character
+				o_hex	:	out	std_logic_vector(6 downto 0)	-- 7-segment pattern to display
+				);
 end asciiHex;
 
-
+-- Define architecture
 architecture behavior of asciiHex is
 begin
 
 	--- rancanglah arsitektur dari modul konverter ini.
-	
+
 end behavior;

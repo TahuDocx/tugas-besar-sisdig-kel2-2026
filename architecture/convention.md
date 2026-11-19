@@ -47,5 +47,8 @@ Global rules in `~/.claude/CLAUDE.md` still apply except where "Convention devia
   and per-block `--` comments above.
 - Naming: ports `PascalCase`, entities `camelCase`, signals `snake_case`. This replaces the global
   "`PascalCase` types only" rule. Why: it matches existing code and the DE1/Quartus habit.
+- `serial-comms/uart/` keeps its own naming: `i_`/`o_`/`r_`/`s_` prefixes, UPPERCASE names,
+  English comments, architecture `behavior`. Layout rules (banners, tabs, port block) still apply.
+  Why: adapted UART code, already working; renaming ~500 lines risks breaking it (user, 2026-11-19).
 - None else. `fullAdder16bit.vhd` was restyled to match (2026-11-16); it keeps the ripple-carry
   structure via a `generate` loop.
