@@ -2,7 +2,8 @@
 
 from PySide6.QtCore import Property, QObject, Slot
 
-from sim_runner import FUNCS, formatDuration, fpgaCycles, fpgaTime, simulateTimed
+from sim_runner import (FUNCS, errorSweep, formatDuration, fpgaCycles, fpgaTime, minIterations,
+                        simulateTimed)
 
 
 class SimBackend(QObject):
@@ -37,3 +38,35 @@ class SimBackend(QObject):
         except ValueError as err:
             timing += f"    |    FPGA estimate: {err}"
         return {"report": report, "timing": timing}
+
+    @Slot(str, str, int, bool, int, int, str, result="QVariantMap")
+    def sweep(self, func, t_text, n_max, use_fixed, frac, width, tol_text):
+        """Returns the error-vs-iterations data for n = 1 .. n_max (errorSweep) as
+        {"fixed": [[n, err], ...], "ideal": [[n, err], ...], "error": text,
+         "tol": float, "minFixed": int, "minIdeal": int, "tolError": text}.
+
+        "fixed" is [] when use_fixed is False; "ideal" is always the ideal-arithmetic
+        reference. minFixed/minIdeal are minIterations(series, tol): smallest n whose error
+        stays <= tol up to n_max, 0 = not reached. On invalid form values both lists are []
+        and error is "Error: ..."; on a bad tolerance tol is 0, both mins are 0 and tolError
+        says why. No side effects.
+        """
+        out = {"fixed": [], "ideal": [], "error": "", "tol": 0.0, "minFixed": 0, "minIdeal": 0,
+               "tolError": ""}
+        try:
+            out["ideal"] = errorSweep(func, t_text, n_max, False, frac, width)
+            if use_fixed:
+                out["fixed"] = errorSweep(func, t_text, n_max, True, frac, width)
+        except ValueError as err:
+            out["ideal"], out["fixed"] = [], []
+            out["error"] = f"Error: {err}."
+            return out
+        try:
+            tol = float(tol_text.strip())
+            out["minIdeal"] = minIterations(out["ideal"], tol)
+            out["minFixed"] = minIterations(out["fixed"], tol)
+            out["tol"] = tol
+        except ValueError:
+            out["minIdeal"], out["minFixed"] = 0, 0
+            out["tolError"] = "tolerance must be a finite number > 0"
+        return out

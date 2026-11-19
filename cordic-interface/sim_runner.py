@@ -40,6 +40,53 @@ def simulateTimed(func: str, t_text: str, n: int, use_fixed: bool, frac: int,
     cordic.compute alone (validation and formatting excluded), from time.perf_counter.
     Raises ValueError like simulate(). No side effects.
     """
+    t, kwargs = _parseForm(func, t_text, n, use_fixed, frac, width)
+    start = time.perf_counter()
+    res = cordic.compute(func, t, n, **kwargs)
+    seconds = time.perf_counter() - start
+    return cordic.formatReport(res), seconds
+
+
+def errorSweep(func: str, t_text: str, n_max: int, use_fixed: bool, frac: int,
+               width: int) -> list:
+    """Returns [[n, |value - expected|], ...] for n = 1 .. n_max, one cordic.compute per n
+    (x0 = 1/K depends on n, so a single run's steps would not give the true error).
+
+    Points whose error is not finite (expected undefined, e.g. atanh(1.5)) are left out, so
+    the list may be shorter or empty. Raises ValueError like simulate(). No side effects.
+    """
+    t, kwargs = _parseForm(func, t_text, n_max, use_fixed, frac, width)
+    points = []
+    for n in range(1, n_max + 1):
+        res = cordic.compute(func, t, n, **kwargs)
+        err = abs(res.value - res.expected)
+        if math.isfinite(err):
+            points.append([n, err])
+    return points
+
+
+def minIterations(points: list, tol: float) -> int:
+    """Returns the smallest n in points ([[n, err], ...], n ascending) from which every later
+    point has err <= tol, or 0 if the last point is above tol or points is empty.
+
+    A single early point under tol is ignored when a later one rises above it again (CORDIC
+    error oscillates with n). Raises ValueError unless tol is finite and > 0. No side effects.
+    """
+    if not (math.isfinite(tol) and tol > 0):
+        raise ValueError("tolerance must be a finite number > 0")
+    best = 0
+    for n, err in reversed(points):
+        if err > tol:
+            break
+        best = n
+    return best
+
+
+def _parseForm(func: str, t_text: str, n: int, use_fixed: bool, frac: int,
+               width: int) -> tuple:
+    """Validates the form values and returns (t, compute kwargs). kwargs is {} for float,
+    {"frac", "width"} for fixed. Raises ValueError as described in simulate(). No side
+    effects."""
     if func not in FUNCS:
         raise ValueError(f"unknown function {func!r}")
     try:
@@ -58,10 +105,7 @@ def simulateTimed(func: str, t_text: str, n: int, use_fixed: bool, frac: int,
         kwargs = {"frac": frac, "width": width}
     else:
         kwargs = {}
-    start = time.perf_counter()
-    res = cordic.compute(func, t, n, **kwargs)
-    seconds = time.perf_counter() - start
-    return cordic.formatReport(res), seconds
+    return t, kwargs
 
 
 # === TIMING ===

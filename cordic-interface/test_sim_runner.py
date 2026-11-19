@@ -2,7 +2,8 @@
 
 import unittest
 
-from sim_runner import FUNCS, cordic, formatDuration, fpgaCycles, fpgaTime, simulate, simulateTimed
+from sim_runner import (FUNCS, cordic, errorSweep, formatDuration, fpgaCycles, fpgaTime,
+                        minIterations, simulate, simulateTimed)
 
 
 class SimulateTest(unittest.TestCase):
@@ -80,6 +81,69 @@ class TimingTest(unittest.TestCase):
     def test_timed_propagates_errors(self):
         with self.assertRaises(ValueError):
             simulateTimed("cosh", "abc", 16, True, 14, 16)
+
+
+class ErrorSweepTest(unittest.TestCase):
+    def _expected(self, func, t, n_max, **kw):
+        out = []
+        for n in range(1, n_max + 1):
+            r = cordic.compute(func, t, n, **kw)
+            out.append([n, abs(r.value - r.expected)])
+        return out
+
+    def test_fixed_points_match_compute(self):
+        self.assertEqual(errorSweep("cosh", "0.5", 8, True, 14, 16),
+                         self._expected("cosh", 0.5, 8, frac=14, width=16))
+
+    def test_float_points_match_compute(self):
+        self.assertEqual(errorSweep("ln", " 2 ", 12, False, 99, 1),
+                         self._expected("ln", 2.0, 12))
+
+    def test_float_error_shrinks_with_iterations(self):
+        pts = errorSweep("exp", "0.5", 24, False, 14, 16)
+        self.assertLess(pts[-1][1], pts[1][1] * 1e-4)
+
+    def test_one_point_per_iteration_count(self):
+        pts = errorSweep("sinh", "0.3", 5, True, 14, 16)
+        self.assertEqual([p[0] for p in pts], [1, 2, 3, 4, 5])
+
+    def test_undefined_expected_gives_no_points(self):
+        self.assertEqual(errorSweep("atanh", "1.5", 8, False, 14, 16), [])
+
+    def test_propagates_errors(self):
+        with self.assertRaises(ValueError):
+            errorSweep("cosh", "abc", 8, True, 14, 16)
+        with self.assertRaises(ValueError):
+            errorSweep("cosh", "0.5", 0, True, 14, 16)
+        with self.assertRaises(ValueError):
+            errorSweep("cosh", "0.5", 8, True, 16, 16)
+
+
+class MinIterationsTest(unittest.TestCase):
+    def test_monotonic_first_under_tol(self):
+        pts = [[1, 0.5], [2, 0.1], [3, 0.01], [4, 0.001]]
+        self.assertEqual(minIterations(pts, 0.01), 3)
+
+    def test_lucky_dip_is_skipped(self):
+        pts = [[1, 0.5], [2, 0.001], [3, 0.2], [4, 0.005], [5, 0.004]]
+        self.assertEqual(minIterations(pts, 0.01), 4)
+
+    def test_equal_to_tol_counts(self):
+        self.assertEqual(minIterations([[1, 0.2], [2, 0.01]], 0.01), 2)
+
+    def test_last_point_above_tol_gives_zero(self):
+        self.assertEqual(minIterations([[1, 0.001], [2, 0.5]], 0.01), 0)
+
+    def test_empty_gives_zero(self):
+        self.assertEqual(minIterations([], 0.01), 0)
+
+    def test_all_under_tol_gives_first_n(self):
+        self.assertEqual(minIterations([[1, 0.0], [2, 0.0]], 0.01), 1)
+
+    def test_bad_tol(self):
+        for tol in (0.0, -1e-3, float("nan"), float("inf")):
+            with self.assertRaises(ValueError):
+                minIterations([[1, 0.1]], tol)
 
 
 if __name__ == "__main__":
